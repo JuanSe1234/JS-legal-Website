@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Legal Group - Asesoría Legal</title>
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #2c2c2c; overflow-x: hidden; background: #f5f3ef; }
+        header { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); color: white; padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 10000; box-shadow: 0 2px 20px rgba(0,0,0,0.15); }
+        nav { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; }
+        .logo img { height: 40px; }
+        .logo-text { font-size: 1.3rem; font-weight: 600; color: white; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: white; text-decoration: none; transition: color 0.3s; text-shadow: none; }
+        .nav-links a:hover { color: #c9a96e; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(28, 28, 28, 0.98); padding: 2rem; z-index: 9999; }
+        .mobile-menu.active { display: block; }
+        .mobile-menu a { display: block; color: white; padding: 1rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .mobile-menu-item { position: relative; }
+        .mobile-menu-item > a { display: flex; justify-content: space-between; align-items: center; }
+        .submenu-toggle { font-size: 1.2rem; transition: transform 0.3s; }
+        .mobile-menu-item.active .submenu-toggle { transform: rotate(180deg); }
+        .mobile-submenu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding-left: 1rem; }
+        .mobile-menu-item.active .mobile-submenu { max-height: 800px; }
+        .mobile-submenu a { font-size: 0.9rem; padding: 0.5rem 1rem; border-left: 2px solid rgba(255,255,255,0.3); }
+        .hero { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #c9a96e 100%); color: white; padding: 140px 2rem 100px; text-align: center; margin-top: 60px; position: relative; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.95; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, #c9a96e 0%, #b8935a 100%); color: white; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(201, 169, 110, 0.3); }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(201, 169, 110, 0.5); }
+        .trust-badges { display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+        .trust-badge { display: flex; align-items: center; gap: 0.5rem; background: rgba(201, 169, 110, 0.2); padding: 0.8rem 1.5rem; border-radius: 30px; border: 1px solid rgba(201, 169, 110, 0.3); }
+        .badge { display: inline-block; background: linear-gradient(135deg, #c9a96e 0%, #b8935a 100%); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; margin-bottom: 1rem; }
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); cursor: pointer; z-index: 99999; text-decoration: none; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .stats { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); color: white; padding: 4rem 2rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .stat-item h3 { font-size: 3rem; margin-bottom: 0.5rem; color: #c9a96e; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #2c2c2c; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 3rem; font-size: 1.1rem; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .service-card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; border-top: 4px solid #c9a96e; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 8px 30px rgba(201, 169, 110, 0.3); }
+        .service-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .service-card h3 { color: #2c2c2c; margin-bottom: 1rem; font-size: 1.5rem; }
+        .calculator-section { background: #f5f3ef; padding: 4rem 2rem; }
+        .calculator-tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .calculator-tab { padding: 1rem 2rem; background: white; border: 2px solid #e0ddd8; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        .calculator-tab.active { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); color: white; border-color: #2c2c2c; }
+        .calculator-content { display: none; max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .calculator-content.active { display: block; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #2c2c2c; font-weight: 600; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #e0ddd8; border-radius: 5px; font-size: 1rem; }
+        .calculator-result { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #c9a96e 100%); color: white; padding: 2rem; border-radius: 10px; margin-top: 2rem; text-align: center; display: none; }
+        .calculator-result.show { display: block; }
+        .calculator-result h3 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .process { background: white; }
+        .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .step { text-align: center; padding: 2rem; }
+        .step-number { display: inline-block; width: 60px; height: 60px; background: linear-gradient(135deg, #c9a96e 0%, #b8935a 100%); color: white; border-radius: 50%; line-height: 60px; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; }
+        .step h3 { color: #2c2c2c; margin-bottom: 0.5rem; }
+        .testimonials { padding: 4rem 2rem; background: #f5f3ef; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto 0; }
+        .testimonial-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        .testimonial-quote { font-size: 3rem; color: #c9a96e; opacity: 0.3; line-height: 1; }
+        .testimonial-text { margin: 1rem 0; font-style: italic; line-height: 1.8; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+        .testimonial-avatar { width: 50px; height: 50px; background: linear-gradient(135deg, #2c2c2c 0%, #c9a96e 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; }
+        .testimonial-info h4 { margin: 0; color: #2c2c2c; }
+        .testimonial-info p { margin: 0; color: #666; font-size: 0.9rem; }
+        .faq { background: white; padding: 4rem 2rem; }
+        .faq-list { max-width: 800px; margin: 3rem auto 0; }
+        .faq-item { background: white; border: 2px solid #e0ddd8; border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+        .faq-question { padding: 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: #2c2c2c; }
+        .faq-icon { font-size: 1.5rem; transition: transform 0.3s; color: #c9a96e; }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s; padding: 0 1.5rem; color: #666; }
+        .faq-item.active .faq-answer { max-height: 500px; padding: 0 1.5rem 1.5rem; }
+        .blog { background: #f5f3ef; padding: 4rem 2rem; }
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto 0; }
+        .blog-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .blog-card:hover { transform: translateY(-10px); }
+        .blog-image { height: 200px; background: linear-gradient(135deg, #2c2c2c 0%, #c9a96e 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .blog-content { padding: 2rem; }
+        .blog-date { color: #c9a96e; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .blog-card h3 { color: #2c2c2c; margin-bottom: 1rem; }
+        .read-more { color: #c9a96e; text-decoration: none; font-weight: 600; }
+        .cta-banner { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #c9a96e 100%); color: white; padding: 4rem 2rem; text-align: center; }
+        .cta-banner h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+        .cta-btn-primary { background: white; color: #2c2c2c; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s; }
+        .cta-btn-primary:hover { background: #c9a96e; color: white; }
+        .cta-btn-secondary { background: rgba(255,255,255,0.1); color: white; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: bold; border: 2px solid white; transition: all 0.3s; }
+        .cta-btn-secondary:hover { background: rgba(201, 169, 110, 0.3); }
+        .submit-button { width: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); color: white; padding: 1rem; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.3s; }
+        .submit-button:hover { background: linear-gradient(135deg, #c9a96e 0%, #b8935a 100%); }
+        .contact-form { max-width: 600px; margin: 3rem auto; background: white; padding: 3rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        footer { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); color: white; padding: 3rem 2rem 1rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .footer-section h3 { margin-bottom: 1rem; color: #c9a96e; }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 0.5rem; }
+        .footer-section a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
+        .footer-section a:hover { color: #c9a96e; }
+        .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1.1rem; }
+            .section-title { font-size: 2rem; }
+            .services-grid, .testimonials-grid, .blog-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; }
+            .whatsapp-float { right: 20px; bottom: 20px; width: 55px; height: 55px; font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo-js-legal.png" alt="JS Legal Group">
+                <span class="logo-text">JS Legal Group</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#calculadoras">Calculadoras</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#inicio" onclick="toggleMobileMenu()">Inicio</a>
+        <div class="mobile-menu-item">
+            <a href="#servicios" onclick="toggleMobileMenu()">Servicios</a>
+        </div>
+        <a href="#calculadoras" onclick="toggleMobileMenu()">Calculadoras</a>
+        <a href="#testimonios" onclick="toggleMobileMenu()">Testimonios</a>
+        <a href="#blog" onclick="toggleMobileMenu()">Blog</a>
+        <a href="#contacto" onclick="toggleMobileMenu()">Contacto</a>
+    </div>
+
+    <section class="hero" id="inicio">
+        <div class="badge">⚖️ Asesoría Legal Profesional</div>
+        <h1>Tu asesor legal de confianza</h1>
+        <p>Resolvemos tus problemas legales de forma rápida, clara y sin complicaciones</p>
+        <a href="#contacto" class="cta-button">Consulta Gratuita</a>
+        
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <span>⭐</span>
+                <span>4.9/5 en Google</span>
+            </div>
+            <div class="trust-badge">
+                <span>✓</span>
+                <span>+500 casos exitosos</span>
+            </div>
+            <div class="trust-badge">
+                <span>🏆</span>
+                <span>15 años de experiencia</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Casos ganados</p>
+            </div>
+            <div class="stat-item">
+                <h3>98%</h3>
+                <p>Tasa de éxito</p>
+            </div>
+            <div class="stat-item">
+                <h3>24h</h3>
+                <p>Tiempo de respuesta</p>
+            </div>
+            <div class="stat-item">
+                <h3>15+</h3>
+                <p>Años de experiencia</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="servicios">
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <p class="section-subtitle">Te ayudamos a resolver cualquier situación legal con experiencia y profesionalismo</p>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">📄</div>
+                <h3>Liquidación laboral</h3>
+                <p>Te ayudamos a calcular y reclamar todos los pagos que te corresponden al terminar tu contrato: cesantías, primas, vacaciones e indemnizaciones.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">⚠️</div>
+                <h3>Despido injustificado</h3>
+                <p>Si fuiste despedido sin justa causa, podemos ayudarte a obtener la indemnización completa que mereces según la ley.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏥</div>
+                <h3>Accidentes laborales</h3>
+                <p>Asesoría completa para reclamar compensaciones por accidentes de trabajo, enfermedades profesionales y protección de tus derechos.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">👨‍👩‍👧‍👦</div>
+                <h3>Separaciones</h3>
+                <p>Te orientamos en procesos de separación de bienes, divorcio de mutuo acuerdo o contencioso, protegiendo tus intereses y los de tu familia.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏛️</div>
+                <h3>Sucesiones</h3>
+                <p>Gestión completa de procesos sucesorales, declaración de herederos, partición de bienes y liquidación de herencias.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">⚖️</div>
+                <h3>Acciones de tutela</h3>
+                <p>Defensa y protección de tus derechos fundamentales mediante acciones de tutela ante vulneraciones por entidades públicas o privadas.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏠</div>
+                <h3>Estudio de títulos</h3>
+                <p>Análisis jurídico completo de la propiedad inmueble, verificación de tradición, limitaciones y cargas sobre el bien.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📋</div>
+                <h3>Derecho de petición</h3>
+                <p>Elaboración y seguimiento de derechos de petición ante entidades públicas y privadas para obtener respuestas oportunas.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏘️</div>
+                <h3>Compraventas</h3>
+                <p>Asesoría integral en compraventa de bienes inmuebles y muebles, elaboración de promesas y escrituras públicas.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">✍️</div>
+                <h3>Poder general</h3>
+                <p>Elaboración de poderes generales y especiales para representación legal en trámites administrativos y judiciales.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏢</div>
+                <h3>Constitución de sociedades</h3>
+                <p>Creación y registro de todo tipo de sociedades comerciales: SAS, Ltda, S.A., con asesoría en estructura corporativa.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📝</div>
+                <h3>Minutas y acuerdos</h3>
+                <p>Elaboración de minutas y acuerdos de transacción laborales y civiles para resolver conflictos de manera extrajudicial.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🎁</div>
+                <h3>Donaciones</h3>
+                <p>Asesoría en donaciones de bienes muebles e inmuebles, elaboración de escrituras y registro de las mismas.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">®️</div>
+                <h3>Registro de marca</h3>
+                <p>Trámite completo de registro de marcas ante la Superintendencia de Industria y Comercio, protegiendo tu propiedad intelectual.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📑</div>
+                <h3>Contratos</h3>
+                <p>Redacción y revisión de todo tipo de contratos: laborales, comerciales, arrendamiento, prestación de servicios y más.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">💡</div>
+                <h3>Asesorías jurídicas</h3>
+                <p>Consultoría legal especializada en diferentes áreas del derecho para orientarte en la toma de decisiones importantes.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🔍</div>
+                <h3>Revisión de documentos</h3>
+                <p>Análisis detallado de documentos legales, contratos y escrituras para identificar riesgos y proteger tus intereses.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏛️</div>
+                <h3>Trámites notariales</h3>
+                <p>Gestión completa de trámites ante notarías: autenticaciones, registro de documentos y acompañamiento en escrituración.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🤝</div>
+                <h3>Procesos conciliatorios</h3>
+                <p>Mediación y representación en audiencias de conciliación para resolver conflictos de manera ágil y efectiva.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">👨‍⚖️</div>
+                <h3>Asistencia a audiencias</h3>
+                <p>Representación legal y acompañamiento en audiencias judiciales, administrativas y de conciliación.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">💰</div>
+                <h3>Cobranzas</h3>
+                <p>Recuperación efectiva de cartera morosa, gestión de cobro prejudicial y judicial de deudas comerciales y civiles.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏠</div>
+                <h3>Disminución de plazo de crédito de vivienda</h3>
+                <p>Asesoría especializada para reducir el plazo de tu crédito hipotecario, ahorrando intereses y logrando la libertad financiera más rápido.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="calculator-section" id="calculadoras">
+        <div class="container">
+            <h2 class="section-title">Calculadoras Gratuitas</h2>
+            <p class="section-subtitle">Calcula tus derechos laborales en minutos</p>
+            
+            <div class="calculator-tabs">
+                <div class="calculator-tab active" onclick="switchCalculator('liquidacion')">💼 Liquidación</div>
+                <div class="calculator-tab" onclick="switchCalculator('vacaciones')">🏖️ Vacaciones</div>
+            </div>
+            
+            <div style="max-width: 800px; margin: 2rem auto; padding: 1.5rem; background: #fef8ed; border-left: 4px solid #c9a96e; border-radius: 8px;">
+                <p style="margin: 0; color: #6b5a3d; font-size: 0.95rem;">
+                    <strong>⚠️ Nota importante:</strong> Las calculadoras proporcionan estimaciones aproximadas basadas en el Código Sustantivo del Trabajo colombiano. Para obtener cálculos precisos y personalizados según tu caso particular, te recomendamos contactar directamente con un abogado especializado. Cada situación laboral tiene particularidades que pueden afectar los montos finales.
+                </p>
+            </div>
+
+            <div id="liquidacion" class="calculator-content active">
+                <h3 style="color: #1a3a52; margin-bottom: 1.5rem;">Calculadora de Liquidación</h3>
+                
+                <div class="form-group">
+                    <label>Salario mensual (COP)</label>
+                    <input type="number" id="salarioLiquidacion" placeholder="Ej: 2500000">
+                </div>
+                
+                <div class="form-group">
+                    <label>Años trabajados</label>
+                    <input type="number" id="anosLiquidacion" placeholder="Ej: 3">
+                </div>
+                
+                <div class="form-group">
+                    <label>Meses adicionales</label>
+                    <input type="number" id="mesesLiquidacion" placeholder="Ej: 6" max="11">
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de contrato</label>
+                    <select id="tipoContratoLiquidacion" onchange="mostrarOpcionesContrato()">
+                        <option value="indefinido">Término Indefinido</option>
+                        <option value="fijo">Término Fijo</option>
+                        <option value="obra">Obra o Labor</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="motivoTerminacionGroup">
+                    <label>Motivo de terminación</label>
+                    <select id="motivoTerminacion">
+                        <option value="sin_justa_causa">Sin justa causa (despido)</option>
+                        <option value="con_justa_causa">Con justa causa</option>
+                        <option value="renuncia">Renuncia voluntaria</option>
+                        <option value="mutuo_acuerdo">Mutuo acuerdo</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="antesVencimientoGroup" style="display: none;">
+                    <label>¿Terminación antes del vencimiento del contrato?</label>
+                    <select id="antesVencimiento" onchange="mostrarMesesRestantes()">
+                        <option value="no">No, al vencimiento</option>
+                        <option value="si">Sí, antes del vencimiento</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="mesesRestantesGroup" style="display: none;">
+                    <label>Meses que faltaban para el vencimiento</label>
+                    <input type="number" id="mesesRestantes" placeholder="Ej: 6">
+                </div>
+                
+                <button class="submit-button" onclick="calcularLiquidacion()">Calcular Liquidación</button>
+                
+                <div id="resultLiquidacion" class="calculator-result"></div>
+            </div>
+
+            <div id="vacaciones" class="calculator-content">
+                <h3 style="color: #1a3a52; margin-bottom: 1.5rem;">Calculadora de Vacaciones</h3>
+                
+                <div class="form-group">
+                    <label>Salario mensual (COP)</label>
+                    <input type="number" id="salarioVacaciones" placeholder="Ej: 2500000">
+                </div>
+                
+                <div class="form-group">
+                    <label>Días trabajados en el año</label>
+                    <input type="number" id="diasTrabajados" placeholder="Ej: 365" max="365">
+                </div>
+                
+                <button class="submit-button" onclick="calcularVacaciones()">Calcular Vacaciones</button>
+                
+                <div id="resultVacaciones" class="calculator-result"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process container">
+        <h2 class="section-title">¿Cómo funciona?</h2>
+        <p class="section-subtitle">Un proceso simple y transparente</p>
+        
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Agenda tu consulta</h3>
+                <p>Contáctanos por WhatsApp o agenda una cita en línea. La primera consulta es completamente gratuita.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Analizamos tu caso</h3>
+                <p>Revisamos tu situación y documentos. Te explicamos tus derechos y las opciones disponibles.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Presentamos tu caso</h3>
+                <p>Nos encargamos de toda la gestión legal. Tú solo te preocupas por seguir con tu vida.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Obtienes resultados</h3>
+                <p>Te mantenemos informado en cada paso. Luchamos hasta conseguir lo que te corresponde.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonios">
+        <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+        <p class="section-subtitle">Más de 500 personas han confiado en nosotros</p>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">Me despidieron sin justificación y no sabía qué hacer. LexRápido me ayudó a recuperar toda mi liquidación e indemnización. Excelente servicio y muy profesionales.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">MC</div>
+                    <div class="testimonial-info">
+                        <h4>María Camila R.</h4>
+                        <p>Auxiliar contable</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">Después de 5 años trabajando, mi empleador no me quería pagar las cesantías completas. Gracias a LexRápido recibí todo lo que me correspondía más los intereses.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">JD</div>
+                    <div class="testimonial-info">
+                        <h4>Juan David M.</h4>
+                        <p>Operario de producción</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">Tuve un accidente laboral y la empresa no quería responder. El equipo de LexRápido logró que me pagaran la indemnización completa. Muy agradecida.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">LP</div>
+                    <div class="testimonial-info">
+                        <h4>Laura Patricia G.</h4>
+                        <p>Supervisora de ventas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <p class="section-subtitle">Resolvemos tus dudas más comunes</p>
+            
+            <div class="faq-list">
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>¿Cuánto cuesta la primera consulta?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>La primera consulta es completamente GRATUITA. Queremos conocer tu caso y explicarte tus opciones sin ningún compromiso. Solo pagas si decides que te representemos legalmente.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>¿Cuánto tiempo toma resolver un caso laboral?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Depende de la complejidad del caso. Algunos se resuelven en semanas mediante conciliación, mientras que otros pueden tomar meses si llegan a juicio. Te mantendremos informado en cada etapa del proceso.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>¿Qué documentos necesito para iniciar un caso?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Generalmente necesitas: contrato de trabajo, cartas de despido o terminación, comprobantes de pago (colillas), certificado laboral y cualquier comunicación relevante con tu empleador. No te preocupes si no tienes todo, te ayudamos a conseguir lo que falte.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>¿Puedo reclamar si ya firmé la liquidación?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, en muchos casos es posible. Aunque hayas firmado, tienes derecho a reclamar si la liquidación fue incorrecta o incompleta. La ley te protege y puedes exigir el pago de lo que realmente te corresponde.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>¿Qué pasa si no tengo dinero para pagar un abogado?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Trabajamos con planes de pago flexibles y en algunos casos mediante cuota de éxito (solo pagas si ganamos). Tu situación económica no debe ser un impedimento para defender tus derechos laborales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog" id="blog">
+        <div class="container">
+            <h2 class="section-title">Blog Legal</h2>
+            <p class="section-subtitle">Mantente informado sobre tus derechos laborales</p>
+            
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-image">📰</div>
+                    <div class="blog-content">
+                        <p class="blog-date">15 de Octubre, 2024</p>
+                        <h3>Cambios en la reforma laboral 2024: Lo que debes saber</h3>
+                        <p>Conoce los principales cambios en la legislación laboral colombiana y cómo te afectan directamente...</p>
+                        <a href="#" class="read-more">Leer más →</a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <div class="blog-image">💰</div>
+                    <div class="blog-content">
+                        <p class="blog-date">10 de Octubre, 2024</p>
+                        <h3>Cómo calcular correctamente tu liquidación laboral</h3>
+                        <p>Guía completa paso a paso para entender y calcular todos los conceptos que componen tu liquidación...</p>
+                        <a href="#" class="read-more">Leer más →</a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <div class="blog-image">⚖️</div>
+                    <div class="blog-content">
+                        <p class="blog-date">5 de Octubre, 2024</p>
+                        <h3>Derechos que tienes en caso de despido injustificado</h3>
+                        <p>Todo lo que necesitas saber sobre tus derechos cuando te despiden sin justa causa según la ley colombiana...</p>
+                        <a href="#" class="read-more">Leer más →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-banner" id="contacto">
+        <h2>¿Listo para defender tus derechos laborales?</h2>
+        <p>No dejes que te quiten lo que te corresponde. Agenda tu consulta gratuita hoy mismo.</p>
+        
+        <div class="cta-buttons">
+            <a href="https://api.whatsapp.com/send?phone=573142863160&text=Hola,%20necesito%20asesor%C3%ADa%20legal" class="cta-btn-primary" target="_blank" rel="noopener noreferrer">
+                💬 Escribir por WhatsApp
+            </a>
+            <a href="#calendly" class="cta-btn-secondary" onclick="document.getElementById('calendly-section').scrollIntoView({behavior: 'smooth'})">
+                📅 Agendar Cita Online
+            </a>
+        </div>
+    </section>
+
+    <section class="container" id="calendly-section">
+        <h2 class="section-title">Agenda tu Consulta Gratuita</h2>
+        <p class="section-subtitle">Selecciona el día y hora que mejor te convenga</p>
+        <div id="calendly-container" style="min-width: 320px; height: 700px;"></div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>JS Legal Group</h3>
+                <p>Tu asesor legal de confianza. Defendemos tus derechos con experiencia y profesionalismo.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#calculadoras">Calculadoras</a></li>
+                    <li><a href="#testimonios">Testimonios</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <ul>
+                    <li>📱 WhatsApp: +57 314 2863160</li>
+                    <li>📧 Email: info@jslegalgroup.com</li>
+                    <li>📍 Bogotá, Colombia</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Horario</h3>
+                <ul>
+                    <li>Lunes - Viernes: 8am - 6pm</li>
+                    <li>Sábados: 9am - 1pm</li>
+                    <li>Domingos: Cerrado</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 JS Legal Group. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="https://api.whatsapp.com/send?phone=573142863160&text=Hola,%20necesito%20asesor%C3%ADa%20legal" class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="Contactar por WhatsApp">
+        <svg viewBox="0 0 32 32" style="width: 32px; height: 32px; fill: white;">
+            <path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 7.933-2.127c2.42 1.37 5.173 2.127 8.067 2.127 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.467c-2.482 0-4.908-0.646-7.07-1.87l-0.507-0.292-5.253 1.408 1.409-5.235-0.322-0.532c-1.343-2.22-2.053-4.775-2.053-7.413 0-7.72 6.28-14 14-14s14 6.28 14 14-6.28 14-14 14zM21.803 18.697c-0.288-0.144-1.707-0.842-1.972-0.938-0.265-0.095-0.458-0.144-0.651 0.144s-0.747 0.938-0.916 1.13c-0.169 0.192-0.337 0.216-0.625 0.072s-1.218-0.449-2.321-1.433c-0.858-0.766-1.437-1.713-1.606-2.001s-0.018-0.443 0.126-0.587c0.13-0.13 0.288-0.337 0.432-0.506s0.192-0.289 0.288-0.481c0.096-0.192 0.048-0.361-0.024-0.506s-0.651-1.569-0.892-2.149c-0.235-0.564-0.474-0.487-0.651-0.496-0.169-0.008-0.361-0.010-0.554-0.010s-0.506 0.072-0.771 0.361c-0.265 0.289-1.011 0.989-1.011 2.411s1.035 2.797 1.179 2.989c0.144 0.192 2.033 3.104 4.926 4.353 0.688 0.296 1.225 0.473 1.643 0.605 0.691 0.22 1.32 0.189 1.816 0.115 0.554-0.083 1.707-0.697 1.947-1.371s0.24-1.251 0.168-1.371c-0.072-0.12-0.265-0.192-0.554-0.337z"></path>
+        </svg>
+    </a>
+
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <script>
+    function toggleMobileMenu() {
+        var menu = document.getElementById("mobileMenu");
+        if (menu) menu.classList.toggle("active");
+    }
+
+    function switchCalculator(calculatorId) {
+        var tabs = document.querySelectorAll(".calculator-tab");
+        var contents = document.querySelectorAll(".calculator-content");
+        
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove("active");
+        }
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].classList.remove("active");
+        }
+        
+        event.target.classList.add("active");
+        document.getElementById(calculatorId).classList.add("active");
+    }
+
+    function mostrarOpcionesContrato() {
+        var tipoContrato = document.getElementById("tipoContratoLiquidacion").value;
+        var motivoGroup = document.getElementById("motivoTerminacionGroup");
+        var antesVencimientoGroup = document.getElementById("antesVencimientoGroup");
+        var mesesRestantesGroup = document.getElementById("mesesRestantesGroup");
+        
+        if (tipoContrato === "indefinido") {
+            motivoGroup.style.display = "block";
+            antesVencimientoGroup.style.display = "none";
+            mesesRestantesGroup.style.display = "none";
+        } else if (tipoContrato === "fijo") {
+            motivoGroup.style.display = "none";
+            antesVencimientoGroup.style.display = "block";
+            mesesRestantesGroup.style.display = "none";
+        } else {
+            motivoGroup.style.display = "none";
+            antesVencimientoGroup.style.display = "none";
+            mesesRestantesGroup.style.display = "none";
+        }
+    }
+
+    function mostrarMesesRestantes() {
+        var antesVencimiento = document.getElementById("antesVencimiento").value;
+        var mesesRestantesGroup = document.getElementById("mesesRestantesGroup");
+        
+        if (antesVencimiento === "si") {
+            mesesRestantesGroup.style.display = "block";
+        } else {
+            mesesRestantesGroup.style.display = "none";
+        }
+    }
+
+    function calcularVacaciones() {
+        var salario = parseFloat(document.getElementById("salarioVacaciones").value) || 0;
+        var diasTrabajados = parseFloat(document.getElementById("diasTrabajados").value) || 0;
+        
+        if (salario === 0 || diasTrabajados === 0) {
+            alert("Por favor ingresa todos los datos");
+            return;
+        }
+        
+        var diasVacaciones = (diasTrabajados / 360) * 15;
+        var valorDiaVacaciones = salario / 30;
+        var totalVacaciones = valorDiaVacaciones * diasVacaciones;
+        
+        var resultadoHTML = "<h3>$" + Math.round(totalVacaciones).toLocaleString("es-CO") + " COP</h3>";
+        resultadoHTML += "<p>Valor de vacaciones</p>";
+        resultadoHTML += "<p style='font-size: 0.9rem; margin-top: 1rem;'>Tienes derecho a " + Math.round(diasVacaciones * 10) / 10 + " días de vacaciones</p>";
+        resultadoHTML += "<p style='font-size: 0.85rem; margin-top: 1.5rem; opacity: 0.8;'>*Por cada año trabajado tienes derecho a 15 días hábiles de vacaciones remuneradas.</p>";
+        
+        document.getElementById("resultVacaciones").innerHTML = resultadoHTML;
+        document.getElementById("resultVacaciones").classList.add("show");
+    }
+
+    function calcularLiquidacion() {
+        var salario = parseFloat(document.getElementById("salarioLiquidacion").value) || 0;
+        var anos = parseFloat(document.getElementById("anosLiquidacion").value) || 0;
+        var meses = parseFloat(document.getElementById("mesesLiquidacion").value) || 0;
+        var tipoContrato = document.getElementById("tipoContratoLiquidacion").value;
+        
+        if (salario === 0 || (anos === 0 && meses === 0)) {
+            alert("Por favor ingresa todos los datos");
+            return;
+        }
+        
+        var tiempoTotal = anos + (meses / 12);
+        
+        var salarioMinimo = 1300000;
+        var auxilioTransporte = 0;
+        if (salario <= salarioMinimo * 2) {
+            auxilioTransporte = 200000;
+        }
+        
+        var baseCalculo = salario + auxilioTransporte;
+        
+        var cesantias = (baseCalculo * tiempoTotal);
+        var interesesCesantias = cesantias * 0.12;
+        var primaServicios = (baseCalculo * tiempoTotal);
+        var vacaciones = (salario / 30) * 15 * tiempoTotal;
+        
+        var indemnizacion = 0;
+        var explicacionIndemnizacion = "";
+        
+        if (tipoContrato === "indefinido") {
+            var motivoTerminacion = document.getElementById("motivoTerminacion").value;
+            
+            if (motivoTerminacion === "sin_justa_causa") {
+                if (salario < salarioMinimo * 10) {
+                    indemnizacion = salario * 30 * anos / 30;
+                    if (meses > 0) {
+                        indemnizacion += (salario / 30) * meses * 2.5;
+                    }
+                    if (anos < 1) {
+                        indemnizacion = salario;
+                        explicacionIndemnizacion = "Despido sin justa causa (menos de 1 año): 1 mes de salario";
+                    } else {
+                        explicacionIndemnizacion = "Despido sin justa causa: 30 días por año";
+                    }
+                } else {
+                    indemnizacion = salario * 20 * anos / 30;
+                    if (meses > 0) {
+                        indemnizacion += (salario / 30) * meses * (20/12);
+                    }
+                    if (anos < 1) {
+                        indemnizacion = salario * 20 / 30;
+                        explicacionIndemnizacion = "Despido sin justa causa (salario alto, menos de 1 año): 20 días";
+                    } else {
+                        explicacionIndemnizacion = "Despido sin justa causa (salario alto): 20 días por año";
+                    }
+                }
+            } else if (motivoTerminacion === "con_justa_causa") {
+                indemnizacion = 0;
+                explicacionIndemnizacion = "No hay indemnización por justa causa";
+            } else if (motivoTerminacion === "renuncia") {
+                indemnizacion = 0;
+                explicacionIndemnizacion = "No hay indemnización por renuncia voluntaria";
+            } else if (motivoTerminacion === "mutuo_acuerdo") {
+                indemnizacion = 0;
+                explicacionIndemnizacion = "Indemnización según acuerdo pactado (no incluida aquí)";
+            }
+        } else if (tipoContrato === "fijo") {
+            var antesVencimiento = document.getElementById("antesVencimiento").value;
+            
+            if (antesVencimiento === "si") {
+                var mesesRestantes = parseFloat(document.getElementById("mesesRestantes").value) || 0;
+                if (mesesRestantes > 0) {
+                    indemnizacion = salario * mesesRestantes;
+                    explicacionIndemnizacion = "Terminación antes del vencimiento: " + mesesRestantes + " meses restantes";
+                }
+            } else {
+                indemnizacion = 0;
+                explicacionIndemnizacion = "No hay indemnización al vencimiento del contrato";
+            }
+        } else if (tipoContrato === "obra") {
+            indemnizacion = 0;
+            explicacionIndemnizacion = "No hay indemnización por terminación de obra";
+        }
+        
+        var total = cesantias + interesesCesantias + primaServicios + vacaciones + indemnizacion;
+        
+        var resultadoHTML = "<h3>$" + Math.round(total).toLocaleString("es-CO") + " COP</h3>";
+        resultadoHTML += "<p>Total aproximado de liquidación</p>";
+        
+        resultadoHTML += "<div style='background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin: 1rem 0;'>";
+        resultadoHTML += "<strong>Tiempo trabajado:</strong> " + anos + " años y " + meses + " meses<br>";
+        resultadoHTML += "<strong>Tipo de contrato:</strong> " + (tipoContrato === "indefinido" ? "Término Indefinido" : tipoContrato === "fijo" ? "Término Fijo" : "Por Obra o Labor");
+        resultadoHTML += "</div>";
+        
+        resultadoHTML += "<div style='font-size: 0.9rem; margin-top: 1rem; text-align: left;'>";
+        resultadoHTML += "<strong>Desglose de prestaciones sociales:</strong><br>";
+        resultadoHTML += "• Cesantías: $" + Math.round(cesantias).toLocaleString("es-CO") + "<br>";
+        resultadoHTML += "• Intereses sobre cesantías: $" + Math.round(interesesCesantias).toLocaleString("es-CO") + "<br>";
+        resultadoHTML += "• Prima de servicios: $" + Math.round(primaServicios).toLocaleString("es-CO") + "<br>";
+        resultadoHTML += "• Vacaciones: $" + Math.round(vacaciones).toLocaleString("es-CO") + "<br>";
+        
+        if (auxilioTransporte > 0) {
+            resultadoHTML += "<br><em style='font-size: 0.85rem;'>* Incluye auxilio de transporte en el cálculo</em><br>";
+        }
+        
+        if (indemnizacion > 0 || explicacionIndemnizacion) {
+            resultadoHTML += "<br><strong>Indemnización:</strong> $" + Math.round(indemnizacion).toLocaleString("es-CO") + "<br>";
+            resultadoHTML += "<em style='font-size: 0.85rem;'>" + explicacionIndemnizacion + "</em>";
+        }
+        
+        resultadoHTML += "</div>";
+        resultadoHTML += "<p style='font-size: 0.85rem; margin-top: 1.5rem; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 1rem;'>*Cálculo aproximado según el Código Sustantivo del Trabajo colombiano. Pueden existir otros conceptos según tu caso particular. Consulta con un abogado para un análisis detallado.</p>";
+        
+        document.getElementById("resultLiquidacion").innerHTML = resultadoHTML;
+        document.getElementById("resultLiquidacion").classList.add("show");
+    }
+
+    function toggleFaq(element) {
+        if (element) element.classList.toggle("active");
+    }
+
+    function initCalendly() {
+        if (typeof Calendly !== "undefined") {
+            Calendly.initInlineWidget({
+                url: "https://calendly.com/jgomezes1079/consulta-legal",
+                parentElement: document.getElementById("calendly-container"),
+                prefill: {},
+                utm: {}
+            });
+        } else {
+            setTimeout(initCalendly, 500);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var anchors = document.querySelectorAll("a[href^='#']");
+        for (var i = 0; i < anchors.length; i++) {
+            anchors[i].addEventListener("click", function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute("href"));
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                }
+            });
+        }
+        
+        initCalendly();
+    });
+    </script>
+</body>
+</html>
